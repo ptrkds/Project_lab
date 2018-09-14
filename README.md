@@ -1,2 +1,1 @@
-# Project_lab
-MSC Project lab
+# Project_lab_tex
