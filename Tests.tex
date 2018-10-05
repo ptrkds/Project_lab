@@ -2,8 +2,11 @@
 
 \label{ch:test}
 
-2pages -> 
+	Our first plan was to test all of the servos and the robot's possibilities. We reached that because we implemented a test software which can communicate with the laptop on serial. 
 	
-	Beillesztem a 3 kódot amivel teszteltem a robotot (Patrik)
-
-	Kéne pár kép ide arról mi is a CENTER meg a HOME (az +1 oldal)
+	
+	The program firstly set all the servos to center and after that relax all of them.The software's input is the servo number and the requested position (from 0 to 1023) and after that the robot's servo motor set that parameter to the selected servo. With this we could test all the servos. The basic code is the following:
+	
+	\lstinputlisting[language={C++}]{implementation/basic_test/basic_test.ino}
+	
+	
