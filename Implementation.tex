@@ -1,1 +1,114 @@
 \chapter{Implementation}
+
+	\section{Setup function}
+	
+		\hspace{15pt}The setup function in the Arduino is basically to create those things which is only one-run things. In our code in the program start we would like to open the Serial connection to communicate with the Arbotix-M microcontroller. After that if we are currently using the Arbotix library then we define the center position (Which was already defined earlier). On the start \texttt{set\char`_position\char`_slowly} function will set the position of the robot to center. This function will be discussed later.
+		If relax is needed then the Relax function wil relax all the servo motors one-by-one.
+		
+		\lstinputlisting[language=C, firstline=32, lastline=59, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+
+	\section{Paramteres}
+	
+		\hspace{15pt}Our parameter list is not too much. We need to define the distances of the axes in milimeter.
+		
+		\lstinputlisting[language=C, firstline=10, lastline=14, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+
+	\section{Acquire the required position values}
+	
+		\hspace{15pt}All the other required values will be given by the user.
+		Serial communication ensures to read more than one character on the serial in the following way. We read the characters one-by-one (with the negative sign too.)
+		
+		\subsection{X, Y and Z position}
+		
+			\hspace{15pt}First we need to get the X, Y and Z values. These values will be our 3D space values. (X - width, Y - depth, Z - height).
+			For example (X, Y, Z) = (0, 0, 385) is the center position, because the Z position need to be the maximum length of the robot.
+			
+			\lstinputlisting[language=C, firstline=76, lastline=110, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+			
+			\hspace{15pt}Reading of the Y and Z positions is the same. We don't want to show these, because there is only variable change in the method.
+			
+		\subsection{Phi angle}
+		
+			\hspace{15pt}Reading of the phi angle is almost the same as the position reading from the serial. The difference is we read the angle, but our calculation use radian values, so a conversion needed as you can see in the code below.
+			
+			\lstinputlisting[language=C, firstline=208, lastline=242, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+			
+		\subsection{Pincher position}
+		
+			\hspace{15pt}Reading the pincher position from the Serial is require only a 0 or 1 value. 0 for the closed position, 1 for the open position of the pincher. It can be changed if we want to use a more exact pincher position, but in our project work we don't want to define it. If the read pincher position value is differ from the boolean value then the default value will be the closed position (0).
+			
+			\lstinputlisting[language=C, firstline=253, lastline=282, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+		
+		\subsection{Default values}
+			
+			\hspace{15pt}If we don't want to acquire the positions and the angle then we use the default center position values (0,0,385), 180° and closed pincher.
+
+	\section{Teta calculations}
+	
+		\hspace{15pt}Each teta calculation formula will be defined in their own section based on the inverse kinematics. All the calculations are using the following calculated values:
+		
+		\hspace{15pt}\[ a = l_3\times sin\theta_3 \]
+		
+		\hspace{15pt}\[ b = l_2 + (l_3\times cos\theta_3) \]
+		
+		\hspace{15pt}\[ c = dz - l_1 - (l_4\times sin\phi) \]
+		
+		\hspace{15pt}\[ r = \sqrt{a^2+b^2} \]
+		
+		\hspace{15pt}\[ A = dx - (l_4\times cos\theta_1 \times cos\phi) \]
+		
+		\hspace{15pt}\[ B = dy - (l_4\times sin\theta_1 \times cos\phi) \]
+		
+		\hspace{15pt}\[ C = dz - l_1 - (l_4\times sin\phi)\]
+		
+		\subsection{Teta1}
+		
+			\hspace{15pt}\[ \theta_1 = \arctan(\frac{dy}{dx}) \]
+		
+			\lstinputlisting[language=C, firstline=401, lastline=406, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+	
+		\subsection{Teta2}
+		
+			\hspace{15pt}\[ \theta_2 = \arctan(c, \pm\sqrt{r^2-c^2}) - \arctan(a,b) \]
+		
+			\lstinputlisting[language=C, firstline=408, lastline=425, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+	
+		\subsection{Teta3}
+		
+			\hspace{15pt}\[ \theta_3 = \arccos(\frac{A^2+B^2+C^2-l_2^2-l_3^2}{2\times l_2\times l_3}) \]
+		
+			\lstinputlisting[language=C, firstline=427, lastline=437, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+	
+		\subsection{Teta4}
+		
+			\hspace{15pt}\[ \theta_4 = \phi - \theta_2 - \theta_3 \]
+		
+			\lstinputlisting[language=C, firstline=439, lastline=444, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+	
+	
+	\section{Calculating position value from teta}
+	
+		\hspace{15pt}It is not enough if we know the teta values because the servo motors need a position input to be in the right angle. The following code part is calculate the right position from the calculated radians. In this function we need to calculate the angles back from the radian. After that it is just an easy matemathical calculation to acquire the right position. If we know that the 0° is the position value 0 while the 360° is the position value 1023.
+	
+		\lstinputlisting[language=C, firstline=379, lastline=399, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+		
+		
+	\section{Basic logic}
+	
+		\hspace{15pt}In the loop function we calculate all the tetas from the acquired values.
+		
+		\lstinputlisting[language=C, firstline=304, lastline=308, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
+		
+		\hspace{15pt}After that the software calculate the positions from the teta values.
+		
+		\lstinputlisting[language=C, firstline=321, lastline=325, firstnumber=6]{implementation/inverse_kinematics/inverse_kinematics.ino}
+		
+		\hspace{15pt}If we get the right positions we need to set the servo motors to this position.
+		
+		\lstinputlisting[language=C, firstline=339, lastline=350, firstnumber=11]{implementation/inverse_kinematics/inverse_kinematics.ino}
+		
+		\hspace{15pt}Right now the robot in the required position so there is no further step if we don't want to run the program again. The last few row in the software is for the new run option.
+		
+		\lstinputlisting[language=C, firstline=353, lastline=359, firstnumber=23]{implementation/inverse_kinematics/inverse_kinematics.ino}
+	
+	

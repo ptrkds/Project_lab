@@ -13,7 +13,7 @@
 #define L3 101.0
 #define L4 101.0
 
-//#define Center_req
+#define RELAX
 #define X_POS_REQ
 #define Y_POS_REQ
 #define Z_POS_REQ
@@ -41,7 +41,6 @@ void setup() {
   // Set everything to center
   Serial.println("###########################");
   
-  //TODO interpolation to center pos
   Serial.println("Set all servo motor to center (512).");
   #ifdef Arbotix
  
@@ -50,7 +49,7 @@ void setup() {
     
 	delay(1000);
 	
-    #ifdef CENTER_REQ
+    #ifdef RELAX
       for (int i = 1; i<= 5; i++){
         Relax(i);  
       }
@@ -268,6 +267,11 @@ void loop() {
 		m_pincher_pos = incomingByte - '0';
 		
       }
+	  
+	  //Set pincher to close if the value incorrect
+	  if( (m_pincher_pos != 1) || (m_pincher_pos != 0) )
+		m_pincher_pos = 0;
+  
   
       Serial.println(m_pincher_pos);
 	  
@@ -358,7 +362,6 @@ void loop() {
 
 
 #ifdef Arbotix
-//TODO 5 if pincher not needed
   void set_position_slowly(const unsigned int* p_position){
     delay(100);                    // recommended pause
     bioloid.loadPose(p_position);   // load the pose from FLASH, into the nextPose buffer
@@ -412,7 +415,6 @@ double calc_teta2(double p_dz, double p_phi, double p_teta3){
   double m_r = sqrt( (m_a*m_a)+(m_b*m_b) );
   
   // Teta2 calculation based on the other values
-  // TODO2 define which one is the left handed
   #ifdef LEFT_HANDED  // If left handed arm
     double m_teta2 = atan2(m_c, sqrt((m_r*m_r) - (m_c*m_c)) ) - atan2(m_a, m_b);
   #else               // If right handed arm
