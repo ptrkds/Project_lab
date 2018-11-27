@@ -2,14 +2,18 @@
 
 	\hspace{15pt}First of all see the design in picture:
 
-		\begin{figure}[h]
+		\begin{figure}[H]
 			\centering
 			\includegraphics[width=\textwidth]{./images/system_design}
 			\caption{System design}
 		\end{figure}
 
-	Generally about the Denavit-Hartenber parameters
-For general description of robot geometry exist a method called Denavit-Hartenberger transformation matrix. With this a coordinate system can be transmitted in any coordinate system, if two offsets and two rotations are used in a corresponding order. In this case the two distance marked with d and a, and the rotation parameters are the following: $\theta$, q. \\
+	In this picture you can see, we have 5 input parameters. These are mandatory for the perfect calculation. In first step we calculate the teta number for the poisiton calculation. After that comes the position calculation. As a result our robots can move to the given point in the given coordinate system.
+	
+	\section{Denavit-Hartenberg}
+
+	\hspace{15pt}Generally about the Denavit-Hartenberger parameters
+For general description of robot geometry exist a method called Denavit-Hartenberg transformation matrix. With this a coordinate system can be transmitted in any coordinate system, if two offsets and two rotations are used in a corresponding order. In this case the two distance marked with d and a, and the rotation parameters are the following: $\theta$, q. \\
 
 
 
@@ -31,44 +35,44 @@ General steps:
 		
 		\begin{figure}[H]
 			\centering
-			\includegraphics[]{./images/denavit_parameters}
-			\caption{a. Denavit-Harzenbergeer parameters of the robot}
+			\includegraphics[scale=1.2]{./images/denavit_parameters}
+			\caption{a. Denavit-Hartenberg parameters of the robot}
 		\end{figure}
 		
 		\begin{enumerate}
-			\item [3] The steps of matrix transformation: \\
+			\item [3.] The steps of matrix transformation: \\
 		\end{enumerate} 
 
 		\begin{figure}[H]
 			\centering
-			\includegraphics[]{./images/denavit1}
+			\includegraphics[scale=1.2]{./images/denavit1}
 			\caption{a. Matrix transformation}
 		\end{figure}
 		\begin{figure}[H]
 			\centering
-			\includegraphics[]{./images/denavit2}
+			\includegraphics[scale=1.2]{./images/denavit2}
 			\caption{b. Matrix transformation}
 		\end{figure}
 		\begin{figure}[H]
 			\centering
-			\includegraphics[]{./images/denavit3}
+			\includegraphics[scale=1.2]{./images/denavit3}
 			\caption{c. Matrix transformation}
 		\end{figure}
 		\begin{figure}[H]
 			\centering
-			\includegraphics[]{./images/denavit4}
+			\includegraphics[scale=1.2]{./images/denavit4}
 			\caption{d. Matrix transformation}
 		\end{figure}
 		\begin{figure}[H]
 			\centering
-			\includegraphics[]{./images/denavit5}
+			\includegraphics[scale=1.2]{./images/denavit5}
 			\caption{e. Matrix transformation}
 		\end{figure}
 		
 			
 		The Denavit-Hartenberg parameters can be listed in a table as the follows:
 		
-			\begin{table}[h]
+			\begin{table}[H]
 				\centering
 				\begin{tabular}{|l|l|l|l|l|}
 				\hline
@@ -83,7 +87,7 @@ General steps:
 			
 			Our robots parameters is the following:
 		
-			\begin{table}[h]
+			\begin{table}[H]
 				\centering
 				\begin{tabular}{|l|l|}
 				\hline
