@@ -43,7 +43,7 @@
 			
 			\hspace{15pt}If we don't want to acquire the positions and the angle then we use the default center position values (0,0,385), 180° and closed pincher.
 
-	\section{Teta calculations}\label{calculations}
+	\section{{$\theta$} calculations}\label{calculations}
 	
 		\hspace{15pt}Each teta calculation formula will be defined in their own section based on the inverse kinematics. All the calculations are using the following calculated values:
 		
@@ -61,45 +61,45 @@
 		
 		\hspace{15pt}\[ C = dz - l_1 - (l_4\times sin\phi)\]
 		
-		\subsection{Teta1}
+		\subsection{{$\theta _1$}}
 		
 			\hspace{15pt}\[ \theta_1 = \arctan(\frac{dy}{dx}) \]
 		
 			\lstinputlisting[language=C, firstline=401, lastline=406, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
 	
-		\subsection{Teta2}
+		\subsection{{$\theta _2$}}
 		
 			\hspace{15pt}\[ \theta_2 = \arctan(c, \pm\sqrt{r^2-c^2}) - \arctan(a,b) \]
 		
 			\lstinputlisting[language=C, firstline=408, lastline=425, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
 	
-		\subsection{Teta3}
+		\subsection{{$\theta _3$}}
 		
 			\hspace{15pt}\[ \theta_3 = \arccos(\frac{A^2+B^2+C^2-l_2^2-l_3^2}{2\times l_2\times l_3}) \]
 		
 			\lstinputlisting[language=C, firstline=427, lastline=437, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
 	
-		\subsection{Teta4}
+		\subsection{{$\theta _4$}}
 		
 			\hspace{15pt}\[ \theta_4 = \phi - \theta_2 - \theta_3 \]
 		
 			\lstinputlisting[language=C, firstline=439, lastline=444, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
 	
 	
-	\section{Calculating position value from teta}
+	\section{Calculating position value from {$\theta$}}
 	
-		\hspace{15pt}It is not enough if we know the teta values because the servo motors need a position input to be in the right angle. The following code part is calculate the right position from the calculated radians. In this function we need to calculate the angles back from the radian. After that it is just an easy matemathical calculation to acquire the right position. If we know that the 0° is the position value 0 while the 360° is the position value 1023.
+		\hspace{15pt}It is not enough if we know the theta values because the servo motors need a position input to be in the right angle. The following code part is calculate the right position from the calculated radians. In this function we need to calculate the angles back from the radian. After that it is just an easy matemathical calculation to acquire the right position. If we know that the 0° is the position value 0 while the 360° is the position value 1023.
 	
 		\lstinputlisting[language=C, firstline=379, lastline=399, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
 		
 		
 	\section{Basic logic}
 	
-		\hspace{15pt}In the loop function we calculate all the tetas from the acquired values.
+		\hspace{15pt}In the loop function we calculate all the thetas from the acquired values.
 		
 		\lstinputlisting[language=C, firstline=304, lastline=308, firstnumber=1]{implementation/inverse_kinematics/inverse_kinematics.ino}
 		
-		\hspace{15pt}After that the software calculate the positions from the teta values.
+		\hspace{15pt}After that the software calculate the positions from the theta values.
 		
 		\lstinputlisting[language=C, firstline=321, lastline=325, firstnumber=6]{implementation/inverse_kinematics/inverse_kinematics.ino}
 		
